@@ -4,3 +4,8 @@ version = "0.1.0"
 authors = ["Nadir Sampaoli <nadirsampaoli@gmail.com>"]
 
 [dependencies]
+serde = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+diesel = { version = "0.14", features = ["postgres","chrono"] }
+diesel_codegen = { version = "0.14", features = ["postgres"] }
+dotenv = "0.9"
