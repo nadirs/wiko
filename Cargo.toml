@@ -5,6 +5,8 @@ authors = ["Nadir Sampaoli <nadirsampaoli@gmail.com>"]
 
 [dependencies]
 serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
 chrono = { version = "0.4", features = ["serde"] }
 diesel = { version = "0.14", features = ["postgres","chrono"] }
 diesel_codegen = { version = "0.14", features = ["postgres"] }

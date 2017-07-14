@@ -1,7 +1,7 @@
 use chrono;
 use super::schema::*;
 
-#[derive(Debug,Queryable,Identifiable,Associations)]
+#[derive(Debug,Serialize,Deserialize,Queryable,Identifiable,Associations)]
 pub struct Post {
     pub id: i32,
     pub title: String,
@@ -9,7 +9,7 @@ pub struct Post {
     pub published: bool,
 }
 
-#[derive(Debug,Insertable)]
+#[derive(Debug,Serialize,Deserialize,Insertable)]
 #[table_name="posts"]
 pub struct NewPost {
     pub title: String,
@@ -17,7 +17,7 @@ pub struct NewPost {
     pub published: bool,
 }
 
-#[derive(Debug,Queryable,Identifiable,Associations)]
+#[derive(Debug,Serialize,Deserialize,Queryable,Identifiable,Associations)]
 #[belongs_to(Post)]
 pub struct PostsRevision {
     pub id: i32,
@@ -27,7 +27,7 @@ pub struct PostsRevision {
     pub body: String,
 }
 
-#[derive(Debug,Insertable)]
+#[derive(Debug,Serialize,Deserialize,Insertable)]
 #[table_name="posts_revisions"]
 pub struct NewPostRevision {
     pub post_id: i32,

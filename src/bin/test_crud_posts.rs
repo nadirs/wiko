@@ -1,9 +1,11 @@
 extern crate wiko;
 extern crate diesel;
+extern crate serde_json;
 
 use self::wiko::*;
 use self::wiko::models::*;
 use self::diesel::prelude::*;
+
 
 fn main() {
     use wiko::schema::posts::dsl as posts;
@@ -22,13 +24,12 @@ fn main() {
         .get_result(&connection)
         .expect("Error updating post");
 
-    let inserted: PostsRevision = diesel::insert(&new_post_revision)
-        .into(posts_revisions::posts_revisions)
-        .get_result(&connection)
-        .expect("Error creating new post revision");
+    // let inserted: PostsRevision = diesel::insert(&new_post_revision)
+    //     .into(posts_revisions::posts_revisions)
+    //     .get_result(&connection)
+    //     .expect("Error creating new post revision");
 
-    println!("{} {} {:?}", inserted.id, inserted.title, inserted.created_at);
-    println!("{}", inserted.body);
+    println!("{}", serde_json::to_string(&new_post_revision).expect("Error converting revision to json"));
     println!("----------\n");
 
     let posts = posts::posts.filter(posts::published.eq(true))
@@ -47,12 +48,9 @@ fn main() {
     let posts_with_revisions = posts.into_iter().zip(grouped_revisions).collect::<Vec<_>>();
 
     for (post, revisions) in posts_with_revisions {
-        println!("{} {}", post.id, post.title);
-        println!("{}", post.body);
+        println!("{}", serde_json::to_string_pretty(&post).expect("Error converting post to json"));
         println!("{} revisions:", revisions.len());
-        for revision in revisions {
-            println!("| {} | {} | {}", revision.id, revision.created_at, revision.title);
-        }
+        println!("{}", serde_json::to_string_pretty(&revisions).expect("Error converting revisions to json"));
         println!("----------\n");
     }
 
