@@ -13,3 +13,7 @@ diesel_codegen = { version = "^0", features = ["postgres"] }
 dotenv = "*"
 iron = "*"
 router = "*"
+
+[dev-dependencies]
+diesel = { version = "*", features = ["sqlite","chrono"] }
+diesel_codegen = { version = "*", features = ["sqlite"] }

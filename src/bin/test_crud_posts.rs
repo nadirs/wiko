@@ -2,16 +2,17 @@ extern crate wiko;
 extern crate diesel;
 extern crate serde_json;
 
-use self::wiko::*;
-use self::wiko::models::*;
-use self::diesel::prelude::*;
-
-
+#[cfg(test)]
+#[test]
 fn main() {
+    use self::wiko::establish_test_connection;
+    use self::wiko::models::*;
+    use self::diesel::prelude::*;
+
     use wiko::schema::posts::dsl as posts;
     use wiko::schema::posts_revisions::dsl as posts_revisions;
 
-    let connection = establish_connection();
+    let connection = establish_test_connection();
 
     let new_post_revision = NewPostRevision {
         post_id: 19,
