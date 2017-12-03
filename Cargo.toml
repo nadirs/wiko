@@ -7,13 +7,9 @@ authors = ["Nadir Sampaoli <nadirsampaoli@gmail.com>"]
 serde = "^1"
 serde_derive = "^1"
 serde_json = "^1"
-chrono = { version = "^0", features = ["serde"] }
-diesel = { version = "^0", features = ["postgres","chrono"] }
-diesel_codegen = { version = "^0", features = ["postgres"] }
+chrono = { version = "*", features = ["serde"] }
+diesel = { version = "*", features = ["postgres","chrono"] }
+diesel_derives = { version = "*", features = ["postgres"] }
 dotenv = "*"
 iron = "*"
 router = "*"
-
-[dev-dependencies]
-diesel = { version = "*", features = ["sqlite","chrono"] }
-diesel_codegen = { version = "*", features = ["sqlite"] }

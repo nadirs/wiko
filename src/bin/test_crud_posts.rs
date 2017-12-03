@@ -2,17 +2,16 @@ extern crate wiko;
 extern crate diesel;
 extern crate serde_json;
 
-#[cfg(test)]
-#[test]
+
 fn main() {
-    use self::wiko::establish_test_connection;
-    use self::wiko::models::*;
-    use self::diesel::prelude::*;
+    use wiko::establish_connection;
+    use wiko::models::*;
+    use diesel::prelude::*;
 
     use wiko::schema::posts::dsl as posts;
     use wiko::schema::posts_revisions::dsl as posts_revisions;
 
-    let connection = establish_test_connection();
+    let connection = establish_connection();
 
     let new_post_revision = NewPostRevision {
         post_id: 19,
@@ -24,8 +23,9 @@ fn main() {
         .set(posts::title.eq("Good night moon"))
         .get_result(&connection)
         .expect("Error updating post");
+    println!("{:?}", _updated);
 
-    // let inserted: PostsRevision = diesel::insert(&new_post_revision)
+    // let inserted: PostRevision = diesel::insert(&new_post_revision)
     //     .into(posts_revisions::posts_revisions)
     //     .get_result(&connection)
     //     .expect("Error creating new post revision");
@@ -39,10 +39,10 @@ fn main() {
         .load::<(Post)>(&connection)
         .expect("Error loading posts");
 
-    let all_needed_revisions = PostsRevision::belonging_to(&posts)
+    let all_needed_revisions = PostRevision::belonging_to(&posts)
         .order(posts_revisions::created.desc())
         .limit(5)
-        .load::<PostsRevision>(&connection)
+        .load::<PostRevision>(&connection)
         .expect("Error loading revisions");
 
     let grouped_revisions = all_needed_revisions.grouped_by(&posts);

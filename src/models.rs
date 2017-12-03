@@ -2,6 +2,7 @@ use chrono;
 use super::schema::*;
 
 #[derive(Debug,Default,Serialize,Deserialize,Queryable,Identifiable,Associations)]
+#[table_name="posts"]
 pub struct Post {
     pub id: i32,
     pub title: String,
@@ -19,24 +20,13 @@ pub struct NewPost {
 
 #[derive(Debug,Serialize,Deserialize,Queryable,Identifiable,Associations)]
 #[belongs_to(Post)]
-pub struct PostsRevision {
+#[table_name="posts_revisions"]
+pub struct PostRevision {
     pub id: i32,
     pub created_at: chrono::NaiveDateTime,
     pub post_id: i32,
     pub title: String,
     pub body: String,
-}
-
-impl Default for PostsRevision {
-    fn default() -> Self {
-        PostsRevision {
-            id: i32::default(),
-            created_at: chrono::Utc::now().naive_utc(),
-            post_id: i32::default(),
-            title: String::default(),
-            body: String::default(),
-        }
-    }
 }
 
 #[derive(Debug,Default,Serialize,Deserialize,Insertable)]
@@ -47,3 +37,12 @@ pub struct NewPostRevision {
     pub body: String,
 }
 
+impl NewPostRevision {
+    pub fn from_post(post: &Post) -> Self {
+        NewPostRevision {
+            post_id: post.id,
+            title: post.title.clone(),
+            body: post.body.clone(),
+        }
+    }
+}
